@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entendendo Árvores de Decisão em Machine Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos para o tema claro */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Fundo cinza claro */
+            color: #1f2937; /* Texto cinza escuro */
+        }
+        .container {
+            max-width: 1024px;
+            margin: auto;
+            padding: 2rem;
+        }
+        .card {
+            background-color: #ffffff; /* Fundo branco para os cards */
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+        h1, h2 {
+            color: #111827; /* Títulos pretos */
+            border-bottom: 2px solid #e5e7eb; /* Borda cinza clara */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+        }
+        h2 {
+            font-size: 1.875rem;
+            font-weight: 600;
+        }
+        code.inline-code {
+            background-color: #e5e7eb; /* Fundo cinza claro para código inline */
+            color: #111827;
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-size: 0.9em;
+        }
+        pre {
+            background-color: #f9fafb; /* Fundo quase branco para blocos de código */
+            color: #1f2937;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            border: 1px solid #e5e7eb;
+        }
+        /* Cores para syntax highlighting no tema claro */
+        .code-comment {
+            color: #6b7280;
+        }
+        .code-keyword {
+            color: #be123c;
+        }
+        .code-function {
+            color: #7c3aed;
+        }
+        .code-string {
+            color: #059669;
+        }
+        .code-number {
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-gray-900">Árvores de Decisão em Machine Learning</h1>
+            <p class="text-lg text-gray-600 mt-4">Um guia completo, do conceito à prática com Python.</p>
+        </header>
+
+        <!-- Seção 1: O que é uma Árvore de Decisão? -->
+        <div class="card">
+            <h2>O que é uma Árvore de Decisão?</h2>
+            <p class="mb-4">
+                Uma <strong>Árvore de Decisão</strong> é um modelo de Machine Learning supervisionado, não paramétrico, usado tanto para tarefas de <strong>classificação</strong> quanto de <strong>regressão</strong>. A sua estrutura é muito intuitiva, pois se assemelha a um fluxograma, onde cada nó interno representa uma "pergunta" sobre um atributo, cada ramo representa a resposta a essa pergunta e cada folha (nó terminal) representa o resultado final (uma classe ou um valor numérico).
+            </p>
+            <p>
+                A grande vantagem das árvores de decisão é que elas são fáceis de interpretar e visualizar. Elas tomam decisões de forma muito semelhante ao raciocínio humano, dividindo um problema complexo em uma série de perguntas mais simples.
+            </p>
+        </div>
+
+        <!-- Seção 2: Exemplo Gráfico -->
+        <div class="card">
+            <h2>Exemplo Gráfico: Ir à Praia?</h2>
+            <p class="mb-6">
+                Vamos imaginar que queremos decidir se devemos ou não ir à praia. A decisão depende de duas condições: como está o <strong>clima</strong> e se <strong>faz calor</strong>. A árvore de decisão abaixo ilustra esse processo. Começamos no topo (nó raiz) e descemos pela árvore respondendo às perguntas até chegar a uma decisão final.
+            </p>
+            <div class="bg-gray-50 p-6 rounded-lg flex justify-center items-center border border-gray-200">
+                <svg width="100%" height="350" viewBox="0 0 600 350" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Estilos para o tema claro do SVG -->
+                    <style>
+                        .node { fill: #3b82f6; } /* Azul */
+                        .leaf { fill: #22c55e; } /* Verde */
+                        .leaf-no { fill: #ef4444; } /* Vermelho */
+                        .leaf-maybe { fill: #f97316; } /* Laranja */
+                        .text { font-family: 'Inter', sans-serif; font-size: 16px; fill: white; text-anchor: middle; }
+                        .line-text { font-family: 'Inter', sans-serif; font-size: 14px; fill: #374151; text-anchor: middle; } /* Texto da linha escuro */
+                        .line { stroke: #9ca3af; stroke-width: 2; } /* Linha cinza */
+                    </style>
+                    
+                    <!-- Nós de Decisão -->
+                    <ellipse class="node" cx="300" cy="50" rx="80" ry="30"/>
+                    <text class="text" x="300" y="55">Clima?</text>
+
+                    <ellipse class="node" cx="150" cy="170" rx="80" ry="30"/>
+                    <text class="text" x="150" y="175">Faz calor?</text>
+
+                    <ellipse class="node" cx="450" cy="170" rx="80" ry="30"/>
+                    <text class="text" x="450" y="175">Faz calor?</text>
+
+                    <!-- Folhas (Resultados) -->
+                    <rect class="leaf" x="20" y="270" width="120" height="40" rx="10"/>
+                    <text class="text" x="80" y="295">Sim, ir à praia!</text>
+
+                    <rect class="leaf-no" x="180" y="270" width="120" height="40" rx="10"/>
+                    <text class="text" x="240" y="295">Não, muito frio</text>
+
+                    <rect class="leaf-maybe" x="320" y="270" width="140" height="40" rx="10"/>
+                    <text class="text" x="390" y="295">Sim, dá pra caminhar</text>
+
+                    <rect class="leaf-no" x="480" y="270" width="120" height="40" rx="10"/>
+                    <text class="text" x="540" y="295">Não, ficar em casa</text>
+                    
+                    <!-- Linhas e Conexões -->
+                    <path class="line" d="M300,80 Q225,110 150,140" fill="none"/>
+                    <text class="line-text" x="225" y="105">Ensolarado</text>
+
+                    <path class="line" d="M300,80 Q375,110 450,140" fill="none"/>
+                    <text class="line-text" x="375" y="105">Nublado</text>
+
+                    <path class="line" d="M150,200 V270 H80" fill="none"/>
+                    <text class="line-text" x="115" y="230">Sim</text>
+
+                    <path class="line" d="M150,200 V270 H240" fill="none"/>
+                    <text class="line-text" x="185" y="230">Não</text>
+
+                    <path class="line" d="M450,200 V270 H390" fill="none"/>
+                    <text class="line-text" x="420" y="230">Sim</text>
+
+                    <path class="line" d="M450,200 V270 H540" fill="none"/>
+                    <text class="line-text" x="480" y="230">Não</text>
+                </svg>
+            </div>
+        </div>
+
+        <!-- Seção 3: Implementação em Python -->
+        <div class="card">
+            <h2>Implementação com Python e Scikit-learn</h2>
+            <p class="mb-4">
+                A biblioteca <code class="inline-code">scikit-learn</code> oferece uma implementação robusta e fácil de usar de árvores de decisão através da classe <code class="inline-code">DecisionTreeClassifier</code>.
+            </p>
+            <p class="mb-4">
+                O processo geral é:
+            </p>
+            <ol class="list-decimal list-inside space-y-2 mb-6">
+                <li><strong>Carregar os dados:</strong> Features (características) e target (alvo).</li>
+                <li><strong>Dividir os dados:</strong> Uma parte para treino e outra para teste.</li>
+                <li><strong>Instanciar o modelo:</strong> Criar um objeto <code class="inline-code">DecisionTreeClassifier</code>.</li>
+                <li><strong>Treinar o modelo:</strong> Usar o método <code class="inline-code">.fit()</code> com os dados de treino.</li>
+                <li><strong>Fazer previsões:</strong> Usar o método <code class="inline-code">.predict()</code> com os dados de teste.</li>
+                <li><strong>Avaliar o modelo:</strong> Verificar a acurácia das previsões.</li>
+            </ol>
+        </div>
+
+        <!-- Seção 4: Exercício Prático -->
+        <div class="card">
+            <h2>Exercício: Classificação de Flores Íris</h2>
+            <p class="mb-4">
+                Vamos aplicar o que aprendemos em um problema clássico de Machine Learning: classificar flores do gênero Íris em três espécies (<strong class="text-green-600">Setosa</strong>, <strong class="text-blue-600">Versicolor</strong> e <strong class="text-purple-600">Virginica</strong>) com base nas medidas de suas pétalas e sépalas.
+            </p>
+            <p class="mb-6">
+                O código abaixo realiza todo o processo, desde carregar os dados até treinar o modelo e visualizar a árvore de decisão resultante.
+            </p>
+            <pre><code><span class="code-comment"># Passo 1: Importar as bibliotecas necessárias</span>
+<span class="code-keyword">import</span> matplotlib.pyplot <span class="code-keyword">as</span> plt
+<span class="code-keyword">from</span> sklearn.datasets <span class="code-keyword">import</span> load_iris
+<span class="code-keyword">from</span> sklearn.tree <span class="code-keyword">import</span> DecisionTreeClassifier, plot_tree
+<span class="code-keyword">from</span> sklearn.model_selection <span class="code-keyword">import</span> train_test_split
+<span class="code-keyword">from</span> sklearn.metrics <span class="code-keyword">import</span> accuracy_score
+
+<span class="code-comment"># Passo 2: Carregar o dataset Iris</span>
+iris = <span class="code-function">load_iris</span>()
+X = iris.data
+y = iris.target
+
+<span class="code-comment"># Passo 3: Dividir os dados em conjuntos de treino e teste</span>
+<span class="code-comment"># Usaremos 80% dos dados para treinar e 20% para testar a performance do modelo</span>
+X_train, X_test, y_train, y_test = <span class="code-function">train_test_split</span>(X, y, test_size=<span class="code-number">0.2</span>, random_state=<span class="code-number">42</span>)
+
+<span class="code-comment"># Passo 4: Criar e treinar o modelo de Árvore de Decisão</span>
+<span class="code-comment"># 'criterion="entropy"' usa o ganho de informação para decidir o melhor split</span>
+<span class="code-comment"># 'max_depth=3' limita a profundidade da árvore para evitar overfitting e facilitar a visualização</span>
+clf = <span class="code-function">DecisionTreeClassifier</span>(criterion=<span class="code-string">'entropy'</span>, max_depth=<span class="code-number">3</span>, random_state=<span class="code-number">42</span>)
+clf.<span class="code-function">fit</span>(X_train, y_train)
+
+<span class="code-comment"># Passo 5: Fazer previsões no conjunto de teste</span>
+y_pred = clf.<span class="code-function">predict</span>(X_test)
+
+<span class="code-comment"># Passo 6: Avaliar a acurácia do modelo</span>
+accuracy = <span class="code-function">accuracy_score</span>(y_test, y_pred)
+<span class="code-function">print</span>(<span class="code-string">f'Acurácia do modelo: {accuracy * 100:.2f}%'</span>)
+
+<span class="code-comment"># Passo 7: Visualizar a Árvore de Decisão</span>
+plt.<span class="code-function">figure</span>(figsize=(<span class="code-number">20</span>, <span class="code-number">10</span>))
+<span class="code-function">plot_tree</span>(
+    clf,
+    filled=<span class="code-keyword">True</span>,
+    rounded=<span class="code-keyword">True</span>,
+    class_names=iris.class_names,
+    feature_names=iris.feature_names
+)
+plt.<span class="code-function">title</span>(<span class="code-string">"Árvore de Decisão para Classificação de Íris"</span>)
+plt.<span class="code-function">show</span>()
+</code></pre>
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 class="font-semibold text-lg text-gray-900 mb-2">Como Executar o Código</h3>
+                <p class="text-sm">
+                    Para rodar este código, você precisa ter Python instalado e as seguintes bibliotecas: <code class="inline-code">scikit-learn</code> e <code class="inline-code">matplotlib</code>. Você pode instalá-las usando pip:
+                </p>
+                <pre class="mt-2 text-sm"><code>pip install scikit-learn matplotlib</code></pre>
+            </div>
+            <div class="mt-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <h3 class="font-semibold text-lg text-gray-900 mb-2">Análise do Resultado</h3>
+                <p>
+                    Ao executar o código, você verá a acurácia do modelo impressa no terminal (geralmente acima de 95% para este problema) e uma imagem da árvore de decisão será gerada.
+                </p>
+                <p class="mt-2">
+                    Na imagem, cada nó mostra:
+                </p>
+                <ul class="list-disc list-inside space-y-1 mt-2">
+                    <li><code class="inline-code">feature_name <= value</code>: A condição de divisão (ex: "petal width (cm) <= 0.8").</li>
+                    <li><code class="inline-code">entropy</code>: Uma medida de impureza do nó. Quanto menor, mais "puro" o nó é (ou seja, mais amostras de uma única classe ele contém).</li>
+                    <li><code class="inline-code">samples</code>: O número de amostras de treino que chegam a esse nó.</li>
+                    <li><code class="inline-code">value</code>: A distribuição das amostras entre as classes (ex: [40, 41, 39]).</li>
+                    <li><code class="inline-code">class</code>: A classe majoritária naquele nó.</li>
+                </ul>
+                <p class="mt-2">
+                    Observe como a árvore aprende regras simples, como "se a largura da pétala for menor que 0.8 cm, então a flor é uma Setosa", o que torna o modelo extremamente interpretável.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
