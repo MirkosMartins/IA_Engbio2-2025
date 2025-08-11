@@ -3,192 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Árvore de Decisão para Classificação de Câncer de Mama</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>ML Cancer Detection - Aplicação Interativa</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/components/forms.css">
+    <link rel="stylesheet" href="assets/css/components/dashboard.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
     <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <h1 class="main-title">Árvore de Decisão para Classificação de Câncer de Mama</h1>
-                <div class="course-info">
-                    <h2 class="course-title">Exercício 1 - IA em Saúde – Engenharia Biomédica | UFN 2025</h2>
-                    <p class="author">Kalleby Evangelho</p>
+                <h1 class="main-title animate__animated animate__fadeInDown">
+                    <i class="fas fa-brain"></i>
+                    ML Cancer Detection
+                </h1>
+                <p class="subtitle animate__animated animate__fadeInUp animate__delay-1s">
+                    Aplicação Interativa para Classificação de Câncer de Mama
+                </p>
+                <div class="course-info animate__animated animate__fadeInUp animate__delay-2s">
+                    <span class="course-badge">
+                        <i class="fas fa-university"></i>
+                        IA em Saúde - UFN 2025
+                    </span>
+                    <span class="author-badge">
+                        <i class="fas fa-user-graduate"></i>
+                        Kalleby Evangelho
+                    </span>
                 </div>
             </div>
         </div>
     </header>
 
     <!-- Navigation -->
-    <nav class="nav">
+    <nav class="nav sticky-nav">
         <div class="container">
             <ul class="nav-list">
-                <li><a href="#overview" class="nav-link">Visão Geral</a></li>
-                <li><a href="#dataset" class="nav-link">Dataset</a></li>
-                <li><a href="#model" class="nav-link">Modelo</a></li>
-                <li><a href="#results" class="nav-link">Resultados</a></li>
-                <li><a href="#visualizations" class="nav-link">Visualizações</a></li>
-                <li><a href="#conclusions" class="nav-link">Conclusões</a></li>
+                <li><a href="#configuration" class="nav-link"><i class="fas fa-cog"></i> Configuração</a></li>
+                <li><a href="#dataset" class="nav-link"><i class="fas fa-database"></i> Dataset</a></li>
+                <li><a href="#training" class="nav-link"><i class="fas fa-brain"></i> Treinamento</a></li>
+                <li><a href="#results" class="nav-link"><i class="fas fa-chart-line"></i> Resultados</a></li>
+                <li><a href="#visualizations" class="nav-link"><i class="fas fa-chart-bar"></i> Gráficos</a></li>
             </ul>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="main">
-        <!-- Overview Section -->
-        <section id="overview" class="section">
+        <!-- Configuration Section -->
+        <section id="configuration" class="section">
             <div class="container">
-                <h2 class="section-title">Visão Geral do Projeto</h2>
-                <div class="overview-grid">
-                    <div class="overview-card">
-                        <div class="card-icon">
-                            <i class="fas fa-bullseye"></i>
-                        </div>
-                        <h3>Objetivo</h3>
-                        <p>Desenvolver uma árvore de decisão para classificar tumores de mama como malignos ou benignos com alta precisão.</p>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-cog"></i>
+                        Configuração do Projeto
+                    </h2>
+                    <p class="section-description">
+                        Configure o dataset e parâmetros para treinar seu modelo de Machine Learning
+                    </p>
+                </div>
+
+                <div class="config-container">
+                    <div class="config-form-wrapper">
+                        <form id="configForm" class="config-form">
+                            <!-- Dataset Configuration -->
+                            <div class="form-group">
+                                <label for="datasetUrl" class="form-label">
+                                    <i class="fas fa-link"></i>
+                                    URL do Dataset
+                                </label>
+                                <input 
+                                    type="url" 
+                                    id="datasetUrl" 
+                                    class="form-input" 
+                                    placeholder="https://example.com/dataset.csv ou UCI Dataset ID"
+                                    required
+                                >
+                                <small class="form-help">
+                                    Digite a URL do dataset CSV ou ID do UCI ML Repository (ex: 17 para Breast Cancer)
+                                </small>
+                            </div>
+
+                            <!-- Train/Test Split -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="trainSize" class="form-label">
+                                        <i class="fas fa-chart-pie"></i>
+                                        Percentual de Treino
+                                    </label>
+                                    <div class="slider-container">
+                                        <input 
+                                            type="range" 
+                                            id="trainSize" 
+                                            class="form-slider" 
+                                            min="60" 
+                                            max="90" 
+                                            value="80"
+                                            step="5"
+                                        >
+                                        <div class="slider-value">
+                                            <span id="trainValue">80</span>%
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="testSize" class="form-label">
+                                        <i class="fas fa-vial"></i>
+                                        Percentual de Teste
+                                    </label>
+                                    <div class="slider-container">
+                                        <div class="slider-value readonly">
+                                            <span id="testValue">20</span>%
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Model Parameters -->
+                            <div class="form-section">
+                                <h3 class="form-section-title">
+                                    <i class="fas fa-sliders-h"></i>
+                                    Parâmetros do Modelo
+                                </h3>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="maxDepth" class="form-label">Profundidade Máxima</label>
+                                        <select id="maxDepth" class="form-select">
+                                            <option value="3">3</option>
+                                            <option value="5">5</option>
+                                            <option value="7" selected>7</option>
+                                            <option value="10">10</option>
+                                            <option value="None">Sem Limite</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="criterion" class="form-label">Critério</label>
+                                        <select id="criterion" class="form-select">
+                                            <option value="gini">Gini</option>
+                                            <option value="entropy" selected>Entropy</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="minSamplesSplit" class="form-label">Min. Amostras para Divisão</label>
+                                        <input type="number" id="minSamplesSplit" class="form-input" value="5" min="2" max="20">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="minSamplesLeaf" class="form-label">Min. Amostras por Folha</label>
+                                        <input type="number" id="minSamplesLeaf" class="form-input" value="2" min="1" max="10">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="form-actions">
+                                <button type="button" id="loadPresetBtn" class="btn btn-secondary">
+                                    <i class="fas fa-magic"></i>
+                                    Carregar Exemplo
+                                </button>
+                                <button type="submit" id="trainModelBtn" class="btn btn-primary">
+                                    <i class="fas fa-play"></i>
+                                    Treinar Modelo
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                    <div class="overview-card">
-                        <div class="card-icon">
-                            <i class="fas fa-database"></i>
+
+                    <!-- Real-time Preview -->
+                    <div class="config-preview">
+                        <div class="preview-card">
+                            <h3 class="preview-title">
+                                <i class="fas fa-eye"></i>
+                                Pré-visualização
+                            </h3>
+                            <div class="preview-content">
+                                <div class="preview-item">
+                                    <span class="preview-label">Dataset:</span>
+                                    <span class="preview-value" id="previewDataset">Não configurado</span>
+                                </div>
+                                <div class="preview-item">
+                                    <span class="preview-label">Divisão:</span>
+                                    <span class="preview-value" id="previewSplit">80% / 20%</span>
+                                </div>
+                                <div class="preview-item">
+                                    <span class="preview-label">Modelo:</span>
+                                    <span class="preview-value" id="previewModel">Árvore de Decisão</span>
+                                </div>
+                                <div class="preview-item">
+                                    <span class="preview-label">Critério:</span>
+                                    <span class="preview-value" id="previewCriterion">Entropy</span>
+                                </div>
+                            </div>
                         </div>
-                        <h3>Dataset</h3>
-                        <p>Breast Cancer Wisconsin (Diagnostic) com 569 instâncias e 30 características morfológicas.</p>
-                    </div>
-                    <div class="overview-card">
-                        <div class="card-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3>Performance</h3>
-                        <p>Acurácia de 95.6% com 100% de precisão e 88.1% de recall no conjunto de teste.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Dataset Section -->
-        <section id="dataset" class="section bg-light">
+        <section id="dataset" class="section bg-light" style="display: none;">
             <div class="container">
-                <h2 class="section-title">Características do Dataset</h2>
-                <div class="dataset-info">
-                    <div class="dataset-stats">
-                        <div class="stat-item">
-                            <span class="stat-number">569</span>
-                            <span class="stat-label">Instâncias</span>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-database"></i>
+                        Análise do Dataset
+                    </h2>
+                </div>
+
+                <div class="dataset-dashboard">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-table"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="totalSamples">---</span>
+                                <span class="stat-label">Total de Amostras</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number">30</span>
-                            <span class="stat-label">Features</span>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-columns"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="totalFeatures">---</span>
+                                <span class="stat-label">Features</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number">357</span>
-                            <span class="stat-label">Benignos</span>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="benignSamples">---</span>
+                                <span class="stat-label">Benignos</span>
+                            </div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-number">212</span>
-                            <span class="stat-label">Malignos</span>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-content">
+                                <span class="stat-number" id="malignantSamples">---</span>
+                                <span class="stat-label">Malignos</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="dataset-images">
-                        <div class="image-container">
-                            <img src="class_distribution.png" alt="Distribuição das Classes" class="dataset-image">
-                            <p class="image-caption">Distribuição das Classes no Dataset</p>
-                        </div>
-                        <div class="image-container">
-                            <img src="correlation_heatmap.png" alt="Mapa de Correlação" class="dataset-image">
-                            <p class="image-caption">Correlação entre Top 10 Features e Diagnóstico</p>
+
+                    <div class="dataset-visualizations">
+                        <div class="viz-container">
+                            <div class="viz-card">
+                                <h3 class="viz-title">Distribuição das Classes</h3>
+                                <div class="viz-content">
+                                    <canvas id="classDistributionChart"></canvas>
+                                </div>
+                            </div>
+                            <div class="viz-card">
+                                <h3 class="viz-title">Mapa de Correlação</h3>
+                                <div class="viz-content">
+                                    <div id="correlationHeatmap"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Model Section -->
-        <section id="model" class="section">
+        <!-- Training Section -->
+        <section id="training" class="section" style="display: none;">
             <div class="container">
-                <h2 class="section-title">Modelo de Árvore de Decisão</h2>
-                <div class="model-content">
-                    <div class="model-info">
-                        <h3>Parâmetros Otimizados</h3>
-                        <ul class="parameter-list">
-                            <li><strong>Criterion:</strong> entropy</li>
-                            <li><strong>Max Depth:</strong> 7</li>
-                            <li><strong>Min Samples Split:</strong> 5</li>
-                            <li><strong>Min Samples Leaf:</strong> 2</li>
-                        </ul>
-                        <h3>Metodologia</h3>
-                        <p>Utilizou-se busca em grade (Grid Search) com validação cruzada de 5 folds para otimização dos hiperparâmetros. O dataset foi dividido em 80% para treino (455 amostras) e 20% para teste (114 amostras), mantendo a estratificação das classes.</p>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-brain"></i>
+                        Treinamento do Modelo
+                    </h2>
+                </div>
+
+                <div class="training-dashboard">
+                    <div class="progress-container">
+                        <div class="progress-header">
+                            <h3 class="progress-title">Progresso do Treinamento</h3>
+                            <span class="progress-status" id="trainingStatus">Aguardando...</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="progress-steps">
+                            <div class="step" id="step1">
+                                <i class="fas fa-download"></i>
+                                <span>Carregando Dataset</span>
+                            </div>
+                            <div class="step" id="step2">
+                                <i class="fas fa-cogs"></i>
+                                <span>Preparando Dados</span>
+                            </div>
+                            <div class="step" id="step3">
+                                <i class="fas fa-brain"></i>
+                                <span>Treinando Modelo</span>
+                            </div>
+                            <div class="step" id="step4">
+                                <i class="fas fa-chart-line"></i>
+                                <span>Avaliando Performance</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="tree-visualization">
-                        <img src="decision_tree_visualization.png" alt="Visualização da Árvore de Decisão" class="tree-image">
-                        <p class="image-caption">Árvore de Decisão (Primeiros 3 níveis)</p>
+
+                    <div class="training-logs">
+                        <h3 class="logs-title">
+                            <i class="fas fa-terminal"></i>
+                            Logs de Execução
+                        </h3>
+                        <div class="logs-container" id="trainingLogs">
+                            <div class="log-entry">Sistema pronto para treinamento...</div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Results Section -->
-        <section id="results" class="section bg-light">
+        <section id="results" class="section bg-light" style="display: none;">
             <div class="container">
-                <h2 class="section-title">Resultados e Métricas</h2>
-                <div class="results-grid">
-                    <div class="metrics-card">
-                        <h3>Métricas Principais</h3>
-                        <div class="metrics-list">
-                            <div class="metric-item">
-                                <span class="metric-label">Acurácia</span>
-                                <span class="metric-value">95.6%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Precisão</span>
-                                <span class="metric-value">100.0%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Recall</span>
-                                <span class="metric-value">88.1%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">F1-Score</span>
-                                <span class="metric-value">93.7%</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="metrics-card">
-                        <h3>Métricas Clínicas</h3>
-                        <div class="metrics-list">
-                            <div class="metric-item">
-                                <span class="metric-label">Sensibilidade</span>
-                                <span class="metric-value">88.1%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">Especificidade</span>
-                                <span class="metric-value">100.0%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">PPV</span>
-                                <span class="metric-value">100.0%</span>
-                            </div>
-                            <div class="metric-item">
-                                <span class="metric-label">NPV</span>
-                                <span class="metric-value">93.5%</span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-line"></i>
+                        Resultados do Modelo
+                    </h2>
                 </div>
-                <div class="confusion-matrix-section">
-                    <h3>Matriz de Confusão</h3>
-                    <div class="confusion-matrix-container">
-                        <img src="confusion_matrix.png" alt="Matriz de Confusão" class="confusion-matrix-image">
-                        <div class="confusion-explanation">
-                            <h4>Interpretação:</h4>
-                            <ul>
-                                <li><strong>72</strong> casos benignos corretamente identificados</li>
-                                <li><strong>37</strong> casos malignos corretamente identificados</li>
-                                <li><strong>5</strong> casos malignos incorretamente classificados como benignos</li>
-                                <li><strong>0</strong> casos benignos incorretamente classificados como malignos</li>
-                            </ul>
+
+                <div class="results-dashboard">
+                    <div class="metrics-grid">
+                        <div class="metric-card primary">
+                            <div class="metric-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-value" id="accuracyValue">---</span>
+                                <span class="metric-label">Acurácia</span>
+                            </div>
+                        </div>
+                        <div class="metric-card success">
+                            <div class="metric-icon">
+                                <i class="fas fa-crosshairs"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-value" id="precisionValue">---</span>
+                                <span class="metric-label">Precisão</span>
+                            </div>
+                        </div>
+                        <div class="metric-card info">
+                            <div class="metric-icon">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-value" id="recallValue">---</span>
+                                <span class="metric-label">Recall</span>
+                            </div>
+                        </div>
+                        <div class="metric-card warning">
+                            <div class="metric-icon">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <div class="metric-content">
+                                <span class="metric-value" id="f1Value">---</span>
+                                <span class="metric-label">F1-Score</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clinical-metrics">
+                        <h3 class="metrics-section-title">
+                            <i class="fas fa-stethoscope"></i>
+                            Métricas Clínicas
+                        </h3>
+                        <div class="clinical-grid">
+                            <div class="clinical-metric">
+                                <span class="clinical-label">Sensibilidade</span>
+                                <span class="clinical-value" id="sensitivityValue">---</span>
+                            </div>
+                            <div class="clinical-metric">
+                                <span class="clinical-label">Especificidade</span>
+                                <span class="clinical-value" id="specificityValue">---</span>
+                            </div>
+                            <div class="clinical-metric">
+                                <span class="clinical-label">PPV</span>
+                                <span class="clinical-value" id="ppvValue">---</span>
+                            </div>
+                            <div class="clinical-metric">
+                                <span class="clinical-label">NPV</span>
+                                <span class="clinical-value" id="npvValue">---</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="confusion-matrix-section">
+                        <h3 class="matrix-title">
+                            <i class="fas fa-th"></i>
+                            Matriz de Confusão
+                        </h3>
+                        <div class="matrix-container">
+                            <canvas id="confusionMatrixChart"></canvas>
                         </div>
                     </div>
                 </div>
@@ -196,75 +416,91 @@
         </section>
 
         <!-- Visualizations Section -->
-        <section id="visualizations" class="section">
+        <section id="visualizations" class="section" style="display: none;">
             <div class="container">
-                <h2 class="section-title">Visualizações e Análises</h2>
-                <div class="visualizations-grid">
-                    <div class="viz-card">
-                        <img src="feature_importance.png" alt="Importância das Features" class="viz-image">
-                        <h3>Importância das Features</h3>
-                        <p>O perímetro (worst) é a característica mais discriminativa, representando 64.6% da importância total da árvore.</p>
-                    </div>
-                    <div class="viz-card">
-                        <img src="evaluation_dashboard.png" alt="Dashboard de Avaliação" class="viz-image">
-                        <h3>Dashboard Completo de Avaliação</h3>
-                        <p>Visão abrangente incluindo curvas ROC, Precision-Recall e distribuição de probabilidades.</p>
-                    </div>
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="fas fa-chart-bar"></i>
+                        Visualizações Avançadas
+                    </h2>
                 </div>
-            </div>
-        </section>
 
-        <!-- Conclusions Section -->
-        <section id="conclusions" class="section bg-light">
-            <div class="container">
-                <h2 class="section-title">Conclusões e Recomendações</h2>
-                <div class="conclusions-content">
-                    <div class="conclusion-card">
-                        <div class="conclusion-icon">
-                            <i class="fas fa-check-circle"></i>
+                <div class="viz-dashboard">
+                    <div class="viz-grid">
+                        <div class="viz-card large">
+                            <h3 class="viz-title">
+                                <i class="fas fa-tree"></i>
+                                Árvore de Decisão
+                            </h3>
+                            <div class="viz-content">
+                                <div id="decisionTreeViz"></div>
+                            </div>
                         </div>
-                        <h3>Excelente Performance</h3>
-                        <p>O modelo apresenta acurácia de 95.6% com 100% de precisão, demonstrando alta confiabilidade para diagnóstico de câncer de mama.</p>
-                    </div>
-                    <div class="conclusion-card">
-                        <div class="conclusion-icon">
-                            <i class="fas fa-shield-alt"></i>
+                        
+                        <div class="viz-card">
+                            <h3 class="viz-title">
+                                <i class="fas fa-star"></i>
+                                Importância das Features
+                            </h3>
+                            <div class="viz-content">
+                                <canvas id="featureImportanceChart"></canvas>
+                            </div>
                         </div>
-                        <h3>Alta Especificidade</h3>
-                        <p>Especificidade de 100% garante que nenhum caso benigno seja incorretamente classificado como maligno, evitando falsos alarmes.</p>
-                    </div>
-                    <div class="conclusion-card">
-                        <div class="conclusion-icon">
-                            <i class="fas fa-eye"></i>
+
+                        <div class="viz-card">
+                            <h3 class="viz-title">
+                                <i class="fas fa-chart-area"></i>
+                                Curva ROC
+                            </h3>
+                            <div class="viz-content">
+                                <canvas id="rocCurveChart"></canvas>
+                            </div>
                         </div>
-                        <h3>Boa Sensibilidade</h3>
-                        <p>Sensibilidade de 88.1% assegura que a maioria dos casos malignos seja detectada, minimizando riscos de não detecção.</p>
                     </div>
-                </div>
-                <div class="recommendations">
-                    <h3>Recomendações</h3>
-                    <ul>
-                        <li>O modelo deve ser usado como ferramenta de apoio ao diagnóstico médico, não substituindo o julgamento clínico</li>
-                        <li>Validação adicional em datasets externos seria benéfica para confirmar a generalização</li>
-                        <li>Monitoramento contínuo da performance em dados reais é recomendado</li>
-                        <li>Consideração de características adicionais pode melhorar ainda mais a sensibilidade</li>
-                    </ul>
                 </div>
             </div>
         </section>
     </main>
 
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p class="loading-text">Processando dados...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
-                <p>&copy; 2025 Kalleby Evangelho - IA em Saúde – Engenharia Biomédica | UFN</p>
-                <p>Projeto desenvolvido para fins acadêmicos</p>
+                <div class="footer-left">
+                    <p>&copy; 2025 Kalleby Evangelho - UFN</p>
+                    <p>IA em Saúde - Engenharia Biomédica</p>
+                </div>
+                <div class="footer-right">
+                    <a href="#" class="footer-link">
+                        <i class="fab fa-github"></i>
+                        GitHub
+                    </a>
+                    <a href="#" class="footer-link">
+                        <i class="fas fa-book"></i>
+                        Documentação
+                    </a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+    <script src="assets/js/modules/charts.js"></script>
+    <script src="assets/js/modules/api.js"></script>
+    <script src="assets/js/modules/ui.js"></script>
+    <script src="assets/js/script.js"></script>
 </body>
 </html>
-

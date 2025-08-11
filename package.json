@@ -1,0 +1,41 @@
+{
+  "name": "arvore-decisao-cancer-mama",
+  "version": "1.0.0",
+  "description": "Projeto de Árvore de Decisão para Classificação de Câncer de Mama - IA em Saúde UFN 2025",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "start": "python -m http.server 8000",
+    "build": "echo 'Build completed - static files ready for deployment'",
+    "preview": "python -m http.server 8080"
+  },
+  "keywords": [
+    "machine-learning",
+    "decision-tree",
+    "cancer-detection",
+    "breast-cancer",
+    "healthcare-ai",
+    "scikit-learn",
+    "python",
+    "data-science"
+  ],
+  "author": {
+    "name": "Kalleby Evangelho",
+    "email": "kalleby@example.com",
+    "university": "UFN - Universidade Franciscana"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/arvore-decisao-cancer-mama.git"
+  },
+  "bugs": {
+    "url": "https://github.com/username/arvore-decisao-cancer-mama/issues"
+  },
+  "homepage": "https://github.com/username/arvore-decisao-cancer-mama#readme",
+  "devDependencies": {},
+  "dependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
