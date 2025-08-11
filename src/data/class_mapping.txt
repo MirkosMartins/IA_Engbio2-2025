@@ -1,0 +1,2 @@
+B (Benigno): 0
+M (Maligno): 1
